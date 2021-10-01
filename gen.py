@@ -1,5 +1,3 @@
-from re import I, T
-from numpy import iinfo
 import qrcode
 import pandas as pd
 from PIL import ImageFont, ImageDraw
