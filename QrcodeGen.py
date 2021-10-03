@@ -5,12 +5,12 @@ import os
 
 
 class QrcodeGen:
-    def __init__(self, arquivo, cabecalho) -> None:
-        self.arquivo = arquivo
+    def __init__(self, caminho, cabecalho, diretorio="Exportado") -> None:
+        self.caminho = str(caminho)
         self.cabecalho = cabecalho
+        self.diretorio = diretorio
 
-    def criarDiretorio():
-        diretorio = "Exportado"
+    def criarDiretorio(self, diretorio="Exportado"):
         try:
             os.mkdir(diretorio)
             print("Diretório", diretorio, "Criado com sucesso")
@@ -18,20 +18,31 @@ class QrcodeGen:
         except FileExistsError:
             return os.path.abspath(diretorio)
 
-    def carregarMassa(self):
+    @staticmethod
+    def carregarColunas(arquivo):
         try:
-            path = os.path.abspath(self.arquivo)
+            path = os.path.abspath(arquivo)
+            df = pd.read_excel(path)
+            colunas = df.columns
+            return colunas
+        except:
+            return {"mensagem": "Falha ao carregar o arquivo !"}
+
+    def carregarPlanilha(self):
+        try:
+            path = os.path.abspath(self.caminho)
             df = pd.read_excel(path)
             dados = df[self.cabecalho].values
             return dados
         except:
             return {"mensagem": "Falha ao carregar o arquivo !"}
 
-    def multiplosQrcodes(self):
-        massaDados = self.carregarMassa()
+    def gerarQrcodes(self):
+        dados = self.carregarPlanilha()
+        diretorio = self.criarDiretorio(self.diretorio)
 
         qr = qrcode.QRCode()
-        for x in massaDados:
+        for x in dados:
             qr = qrcode.QRCode(
                 version=1, error_correction=qrcode.constants.ERROR_CORRECT_H, box_size=60, border=3)
             qr.add_data(x)
@@ -39,5 +50,5 @@ class QrcodeGen:
             img = qr.make_image(fill_color="black", back_color="white")
             fonte = ImageFont.truetype("fonts/verdanab.ttf", 60)
             img_edit = ImageDraw.Draw(img)
-            img_edit.text((700, 1490), str(x), "#000", fonte)
-            img.save(f"{caminho}\{str(x)}.png")
+            img_edit.text((img.width, 1490), str(x), "#000", fonte)
+            img.save(f"{diretorio}\{str(x)}.png")
