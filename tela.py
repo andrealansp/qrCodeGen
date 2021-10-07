@@ -14,7 +14,7 @@ class QrcodeGui:
                 key="coluna", size=(30, 1))],
             [sg.Text("Nome do Diretório:", font=font, size=(15, 1)), sg.Input(
                 key="diretorio", size=(30, 1))],
-            [sg.Text("Colunas da Planilha", font=font,
+            [sg.Text("Colunas da Planilha:", font=font,
                      size=(15, 1)), sg.Output()],
             [sg.Button("Enviar dados", font=font)]
         ]

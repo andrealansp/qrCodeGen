@@ -1,3 +1,5 @@
+from tkinter.constants import W
+from PySimpleGUI.PySimpleGUI import Window
 import qrcode
 import pandas as pd
 from PIL import ImageFont, ImageDraw
@@ -50,5 +52,9 @@ class QrcodeGen:
             img = qr.make_image(fill_color="black", back_color="white")
             fonte = ImageFont.truetype("fonts/verdanab.ttf", 60)
             img_edit = ImageDraw.Draw(img)
-            img_edit.text((img.width, 1490), str(x), "#000", fonte)
+            width, height = img.size
+            width *= 0.01
+            height *= 0.95
+
+            img_edit.text((width, height), str(x), "#000", fonte)
             img.save(f"{diretorio}\{str(x)}.png")
