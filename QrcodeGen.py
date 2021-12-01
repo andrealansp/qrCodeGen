@@ -55,6 +55,6 @@ class QrcodeGen:
     def gerarPdf(self):
         pdf = PDF(orientation='L', unit='mm', format=(30, 50))
         pdf.set_font('Times', '', 10)
-        pdf.recebeDados(self.nomes)
+        pdf.recebeDados(self.nomes.upper())
         pdf.add_qrcode()
         pdf.output(f"{self.diretorio}/lista.pdf", 'F')
