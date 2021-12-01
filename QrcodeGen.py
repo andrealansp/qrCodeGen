@@ -1,9 +1,7 @@
-from tkinter.constants import W
-from PySimpleGUI.PySimpleGUI import Window
 import qrcode
 import pandas as pd
-from PIL import ImageFont, ImageDraw
 import os
+from PdfExporter import PDF
 
 
 class QrcodeGen:
@@ -11,6 +9,7 @@ class QrcodeGen:
         self.caminho = str(caminho)
         self.cabecalho = cabecalho
         self.diretorio = diretorio
+        self.nomes = []
 
     def criarDiretorio(self, diretorio="Exportado"):
         try:
@@ -50,11 +49,12 @@ class QrcodeGen:
             qr.add_data(x)
             qr.make(fit=True)
             img = qr.make_image(fill_color="black", back_color="white")
-            fonte = ImageFont.truetype("fonts/verdanab.ttf", 60)
-            img_edit = ImageDraw.Draw(img)
-            width, height = img.size
-            width *= 0.01
-            height *= 0.95
-
-            img_edit.text((width, height), str(x), "#000", fonte)
             img.save(f"{diretorio}\{str(x)}.png")
+            self.nomes.append((x, f"{diretorio}\{str(x)}.png"))
+
+    def gerarPdf(self):
+        pdf = PDF(orientation='L', unit='mm', format=(30, 50))
+        pdf.set_font('Times', '', 10)
+        pdf.recebeDados(self.nomes)
+        pdf.add_qrcode()
+        pdf.output(f"{self.diretorio}/lista.pdf", 'F')

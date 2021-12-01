@@ -36,6 +36,7 @@ class QrcodeGui:
                 qrcode = QR(
                     self.values['caminho'], self.values['coluna'], self.values['diretorio'])
                 qrcode.gerarQrcodes()
+                qrcode.gerarPdf()
 
 
 tela = QrcodeGui()
