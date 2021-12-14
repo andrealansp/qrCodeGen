@@ -15,7 +15,7 @@ class PDF(FPDF):
         for i in self.nomes:
             self.add_page()
             self.draw_line()
-            self.text(1, 29, i[0])
+            self.text(1, 29, i[0].upper())
             self.image(i[1], 3, 10, 10, 10, 'PNG')
             self.image(i[1], (3*6), 10, 10, 10, 'PNG')
             self.image(i[1], (3*11), 10, 10, 10, 'PNG')
